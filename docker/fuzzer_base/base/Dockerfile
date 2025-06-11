@@ -7,13 +7,24 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
 
-# Install package
+# Install environment package
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -yy libc6-dev binutils libgcc-9-dev
+RUN apt-get install -yy \
+      wget apt-transport-https git unzip \
+      build-essential libtool libtool-bin gdb \
+      automake autoconf bison flex python python3 sudo vim
+
+
+
+
+# Install fuzzer package
 RUN apt-get update && \
     apt-get install -y \
     python3 python3-dev python3-pip \
     libboost-all-dev \
     cmake ninja-build \
-    git curl wget clang llvm \
+    git curl wpget clang llvm \
     build-essential golang \
     nano pkg-config libtinfo5\
     opam libclang-cpp12-dev libgmp-dev \
@@ -22,29 +33,20 @@ RUN apt-get update && \
     --no-install-recommends
 
 RUN apt-get update && \
-    apt-get install -y \
-    lld binutils-gold bc\
-    libfreetype6 libfreetype6-dev nasm\ 
-    libbz2-dev liblzo2-dev \
-    apt-transport-https unzip \
-    libtool libtool-bin gdb \
-    automake autoconf bison flex sudo vim
+    apt-get install -yy \
+    git build-essential bc \
+    libfreetype6 libfreetype6-dev \
+    python-dev \
+    nasm \
+    libbz2-dev liblzo2-dev 
 
-ENV SRC=/src
-ENV WORK=/work
-RUN mkdir -p $SRC $WORK
-ENV CMAKE_VERSION 3.21.1
-RUN wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.sh && \
-    chmod +x cmake-$CMAKE_VERSION-Linux-x86_64.sh && \
-    ./cmake-$CMAKE_VERSION-Linux-x86_64.sh --skip-license --prefix="/usr/local" && \
-    rm cmake-$CMAKE_VERSION-Linux-x86_64.sh && \
-    rm -rf /usr/local/doc/cmake /usr/local/bin/cmake-gui
+# For parmeSan
+#golang
+# For Beacon
+# libncurses5
 
-#checkout_llvm
-RUN mkdir /script
-COPY fuzzer_base/base/checkout_build_llvm.sh /script/build-llvm.sh
-RUN chmod +x /script/build-llvm.sh && \
-    /script/build-llvm.sh
+
+
 
 # Install pip
 RUN pip3 install --upgrade pip && \

@@ -1,5 +1,5 @@
 ARG FUZZER_PREFIX
-FROM $FUZZER_PREFIX/aflgo
+FROM $FUZZER_PREFIX/windranger
 
 COPY targetBuild/benchmark-project /benchmark/project
 COPY targetBuild/target/line /benchmark/target/line
@@ -18,8 +18,8 @@ RUN ./build_bench_ASAN.sh
 
 RUN echo "****************build aflgo**************************"
 
-COPY aflgo/build_bench_aflgo.sh /benchmark/build_bench_aflgo.sh
-RUN ./build_bench_aflgo.sh
+COPY windranger/build_bench_windranger.sh /benchmark/build_bench_windranger.sh
+RUN ./build_bench_windranger.sh
 
 
 COPY targetBuild/build_patched.sh /benchmark/build_patched.sh

@@ -3,8 +3,8 @@ FROM $PREFIX/base
 
 WORKDIR /fuzzer
 
-RUN git clone https://github.com/aflgo/aflgo.git aflgo && \
-    cd /fuzzer/aflgo && \
+RUN git clone https://github.com/aflgo/aflgo.git AFLGo && \
+    cd /fuzzer/AFLGo && \
     git checkout b170fad54396f376160befd87adbba28b27c15d9 && \
     make clean all && \
     cd llvm_mode && make clean all && \

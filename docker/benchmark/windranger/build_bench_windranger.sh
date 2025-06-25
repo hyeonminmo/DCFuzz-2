@@ -14,18 +14,33 @@ function build_with_WindRanger() {
 
         arr=(${BIN_NAME//-/ })
         SIMPLE_BIN_NAME=${arr[0]}
-
+	
         cd /benchmark
-        CC="gclang"
-        CXX="gclang++"
+        CC="/root/go/bin/gclang"
+        CXX="/root/go/bin/gclang++"
 
         build_target $1 $CC $CXX ""
 
         cd RUNDIR-$1
         get-bc $BIN_NAME || exit 1
+	#get-bc $BIN_NAME
+
+
+	#if [ -f "$BIN_NAME.bc" ]; then
+	#	echo "exist bitcode "
+	#else
+	#	echo "no exit bitcode"
+	#fi
+
+
+	#sleep 3600
+
+
 
         for BUG_NAME in "${str_array[@]:1}"; do
             /fuzzer/WindRanger/instrument/bin/cbi --targets=/benchmark/target/line/$BIN_NAME/$BUG_NAME ./$BIN_NAME.bc
+	    mkdir -p /benchmark/temp-$BIN_NAME-$BUGNAME
+
             ### ASAN disabled
             $2 ./$BIN_NAME.ci.bc $3 -o ./$BIN_NAME-$BUG_NAME
 

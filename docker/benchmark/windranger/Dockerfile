@@ -16,7 +16,7 @@ RUN echo "****************build ASAN********************"
 COPY targetBuild/build_bench_ASAN.sh /benchmark/build_bench_ASAN.sh
 RUN ./build_bench_ASAN.sh
 
-RUN echo "****************build aflgo**************************"
+RUN echo "****************build windranger**************************"
 
 COPY windranger/build_bench_windranger.sh /benchmark/build_bench_windranger.sh
 RUN ./build_bench_windranger.sh

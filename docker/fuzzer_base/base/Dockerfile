@@ -76,7 +76,11 @@ RUN mkdir -p /benchmark/bin && \
 
 # Install pip
 RUN pip3 install --upgrade pip && \
-    pip3 install networkx==2.5 pydot pydotplus wllvm
+    pip3 install networkx==2.5 pydot==1.4.1 pydotplus wllvm  && \
+                lifelines==0.27.4 pandas==1.5.3 && \
+                matplotlib==3.2.2 && \
+                numpy==1.21.6 && \
+                scipy==1.7.3
 
 RUN mkdir -p /fuzzer
 

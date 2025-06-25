@@ -1,11 +1,11 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(dirname $(realpath $0))
-IMAGE_PREFIX=dcfuzz_bench3
+IMAGE_PREFIX=dcfuzz_bench
 FUZZER_PREFIX=fuzzer_base
 
 fuzzer_list=(
-    aflgo
-    #windranger
+    #aflgo
+    windranger
     #fuzzer-test-suite-aflplusplus
     #fuzzer-test-suite-lafintel
     #aflplusplus

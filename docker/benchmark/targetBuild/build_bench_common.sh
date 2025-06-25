@@ -31,14 +31,25 @@ function build_target() {
 # Note that a single binary can become multiple fuzzing targets.
 function copy_build_result() {
     TARG=$2-$3
-    if [ -d RUNDIR-$1]; then
+    echo "*************copy_build_result*********************"
+    echo "project name : $1"
+    echo "binary name : $2"
+    echo "bug name : $3"
+    echo "fuzzer : $4"
+    echo "path : $(pwd)"
+
+    if [ -d RUNDIR-$1 ]; then
 	    echo "exist directory"
     else
 	    echo "not exist directory"
     fi
 
-    echo "timeout test"
-    sleep 60
+    if [ "$4" = "AFLGo" ]; then
+	echo "AFLGO."
+	#echo "$(ls RUNDIR-$1)"
+	#sleep 1800
+    fi
+
 
     cp RUNDIR-$1/$2 /benchmark/bin/$4/$TARG || exit 1
     # If we have 'poc' or 'poc-<binname>' directory, copy it.

@@ -16,6 +16,7 @@ function build_with_AFLGo() {
 
         for BUG_NAME in "${str_array[@]:1}"; do
             ### Draw CFG and CG with BBtargets
+	    #TMP_DIR=/benchmark/temp_$1-$BUG_NAME
             mkdir -p $TMP_DIR
             
             cp /benchmark/target/line/$BIN_NAME/$BUG_NAME $TMP_DIR/BBtargets.txt
@@ -25,6 +26,8 @@ function build_with_AFLGo() {
                         -Wl,-plugin-opt=save-temps"
             build_target $1 $CC $CXX "$ADDITIONAL"
             # find /benchmark/RUNDIR-$1 -name "config.cache" -exec rm -rf {} \;
+
+	    #sleep 60
 
             cat $TMP_DIR/BBnames.txt | rev | cut -d: -f2- | rev | sort | uniq > $TMP_DIR/BBnames2.txt \
             && mv $TMP_DIR/BBnames2.txt $TMP_DIR/BBnames.txt

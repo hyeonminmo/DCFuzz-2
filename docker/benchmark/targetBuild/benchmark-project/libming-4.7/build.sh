@@ -19,6 +19,16 @@ cd ..
 
 build_lib
 
+#echo "BUILD/util Directory :"
+
+#echo $(ls BUILD/util)
+
+#echo "CC : $CC"
+#echo "CFLAGS: $CFLAGS"
+
+#echo "**********************************************************************************"
+
+
 for binary in $RELEVANT_BINARIES; do
   cp BUILD/util/$binary ./$binary
 done

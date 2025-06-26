@@ -39,14 +39,14 @@ function build_patched() {
 mkdir -p /benchmark/bin/patched
 build_patched "libming-4.7" \
     "swftophp 2016-9827 2016-9829 2016-9831 2017-9988 2017-11728 2017-11729"
-#build_patched "binutils-2.26" \
-#    "cxxfilt 2016-4487 2016-4489 2016-4490 2016-4491-a 2016-4491-b 2016-4492 2016-6131"
+build_patched "binutils-2.26" \
+    "cxxfilt 2016-4487 2016-4489 2016-4490 2016-4491-a 2016-4491-b 2016-4492 2016-6131"
 
 # Make duplicates
-#cp /benchmark/bin/patched/cxxfilt-2016-4489 /benchmark/bin/patched/cxxfilt-2016-4489-crash
-#cp /benchmark/bin/patched/cxxfilt-2016-4489 /benchmark/bin/patched/cxxfilt-2016-4489-caller
-#cp /benchmark/bin/patched/cxxfilt-2016-4492 /benchmark/bin/patched/cxxfilt-2016-4492-crash1
-#cp /benchmark/bin/patched/cxxfilt-2016-4492 /benchmark/bin/patched/cxxfilt-2016-4492-crash2
+cp /benchmark/bin/patched/cxxfilt-2016-4489 /benchmark/bin/patched/cxxfilt-2016-4489-crash
+cp /benchmark/bin/patched/cxxfilt-2016-4489 /benchmark/bin/patched/cxxfilt-2016-4489-caller
+cp /benchmark/bin/patched/cxxfilt-2016-4492 /benchmark/bin/patched/cxxfilt-2016-4492-crash1
+cp /benchmark/bin/patched/cxxfilt-2016-4492 /benchmark/bin/patched/cxxfilt-2016-4492-crash2
 
 # Set default binary for cxxfilt-2016-4491
-#cp /benchmark/bin/patched/cxxfilt-2016-4491-b /benchmark/bin/patched/cxxfilt-2016-4491
+cp /benchmark/bin/patched/cxxfilt-2016-4491-b /benchmark/bin/patched/cxxfilt-2016-4491

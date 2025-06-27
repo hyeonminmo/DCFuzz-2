@@ -4,8 +4,8 @@ IMAGE_PREFIX=dcfuzz_bench3
 FUZZER_PREFIX=fuzzer_base2
 
 fuzzer_list=(
-    aflgo
-    #windranger
+   # aflgo
+    windranger
     #fuzzer-test-suite-aflplusplus
     #fuzzer-test-suite-lafintel
     #aflplusplus

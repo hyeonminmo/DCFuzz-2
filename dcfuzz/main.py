@@ -95,6 +95,54 @@ def init():
 
 
 
+def gen_fuzzer_driver_args(fuzzer: Fuzzer,
+                           empty_seed=False) -> dict:
+    global ARGS, CGROUP_ROOT
+    fuzzer_config = config['fuzzer'][fuzzer]
+    target_config = config['target'][TARGET]
+    seed = None
+    jobs = 1
+    if input_dir:
+        seed = input_dir
+    elif empty_seed:
+        seed = '/seeds/custom/empty'
+    else:
+        seed = target_config['seed']
+    group = target_config['group']
+    target_args = target_config['args'].get(fuzzer,
+                                            target_config['args']['default'])
+    root_dir = os.path.realpath(ARGS.output)
+    output = os.path.join(root_dir, TARGET, fuzzer)
+    cgroup_path = os.path.join(CGROUP_ROOT, fuzzer)
+    kw = {
+        'fuzzer': fuzzer,
+        'seed': seed,
+        'output': output,
+        'group': group,
+        'program': TARGET,
+        'argument': target_args,
+        'thread': jobs,
+        'cgroup_path': cgroup_path
+    }
+    return kw
+
+
+def scale(fuzzer, scale_num, input_dir=None, empty_seed=False):
+    '''
+    call Fuzzer API to scale fuzzer
+    must be combined with cpu limit
+    '''
+
+    logger.debug(f'scale: {fuzzer} with scale_num {scale_num}')
+
+    kw = gen_fuzzer_driver_args(fuzzer=fuzzer,
+                                input_dir=input_dir,
+                                empty_seed=empty_seed)
+    kw['command'] = 'scale'
+    kw['scale_num'] = scale_num
+    fuzzer_driver.main(**kw)
+
+
 
 def start(fuzzer: Fuzzer,
           output_dir,
@@ -131,7 +179,19 @@ def start(fuzzer: Fuzzer,
     scale(fuzzer=fuzzer,
           scale_num=1,
           input_dir=input_dir,
-          empty_seed=empty_seed)
+          empty_seed=emipty_seed)
+
+
+def stop(fuzzer, input_dir=None, empty_seed=False):
+    '''
+    call Fuzzer API to stop fuzzer
+    '''
+    logger.debug(f'stop: {fuzzer}')
+    kw = gen_fuzzer_driver_args(fuzzer=fuzzer,
+                                input_dir=input_dir,
+                                empty_seed=empty_seed)
+    kw['command'] = 'stop'
+    fuzzer_driver.main(**kw)
 
 
 

@@ -94,6 +94,47 @@ def init():
 
 
 
+
+
+def start(fuzzer: Fuzzer,
+          output_dir,
+          timeout,
+          input_dir=None,
+          empty_seed=False):
+    '''
+    call Fuzzer API to start fuzzer
+    '''
+
+    global  FUZZERS, ARGS
+    fuzzer_config = config['fuzzer'][fuzzer]
+    create_output_dir = fuzzer_config.get('create_output_dir', True)
+
+    # NOTE: some fuzzers like angora will check whether outptu directory
+    #       is non-exsitent and reports error otherwise.
+    if create_output_dir:
+        host_output_dir = f'{output_dir}/{ARGS.target}/{fuzzer}'
+        os.makedirs(host_output_dir, exist_ok=True)
+    else:
+        host_output_dir = f'{output_dir}/{ARGS.target}'
+        if os.path.exists(f'{output_dir}/{ARGS.target}/{fuzzer}'):
+            logger.error(f'Please remove {output_dir}/{ARGS.target}/{fuzzer}')
+            terminate_dcfuzz()
+        os.makedirs(host_output_dir, exist_ok=True)
+    
+    kw = gen_fuzzer_driver_args(fuzzer=fuzzer,
+                                input_dir=input_dir,
+                                empty_seed=empty_seed)
+    kw['command'] = 'start'
+
+    fuzzer_driver.main(**kw)
+
+    scale(fuzzer=fuzzer,
+          scale_num=1,
+          input_dir=input_dir,
+          empty_seed=empty_seed)
+
+
+
 def init_cgroup():
     '''
     cgroup /dcfuzz is created by /init.sh, the command is the following:
@@ -133,6 +174,10 @@ def init_cgroup():
 
 
 
+
+
+
+
 def main():
     global ARGS, FUZZERS, TARGET
 
@@ -159,15 +204,14 @@ def main():
     except FileExistsError:
         logger.error(f'remove {OUTPUT{')
         exit(1)
-    with open(os.path.join(OUTPUT, 'cmdline', 'w') as f:
+
+    with open(os.path.join(OUTPUT, 'cmdline', 'w')) as f:
         cmdline = " ".join(sys.argv)
         LOG['cmd'] = cmdline
         f.write(f"{cmdline}\n")
 
     init()
-
     current_time = time.time()
-
 
     # set the run-time for each phase
     SYNC_TIME = ARGS.sync
@@ -182,6 +226,18 @@ def main():
     START_TIME = time.time()
 
     init_cgroup()
+
+    # setup fuzzer
+
+    for fuzzer in FUZZERS :
+        logger.info(f'warm up {fuzzer}')
+        CPU_ASSIGN[fuzzer] = 0
+        start(fuzzer=fuzzer,
+                output_dir=OUTPUT,
+                timeout=timeout,
+                input_dir=INPUT,
+                empty_seed=ARGS.empty_seed)
+
 
 
 

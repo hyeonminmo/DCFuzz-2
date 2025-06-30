@@ -64,6 +64,32 @@ RUNNING: bool = False
 
 
 
+
+def terminate_dcfuzz():
+    logger.critical('terminate dcfuzz because of error')
+    cleanup(1)
+
+
+def check_fuzzer_ready_one(fuzzer):
+    global ARGS, FUZZERS, TARGET, OUTPUT
+    # NOTE: fuzzer driver will create a ready file when launcing
+    ready_path = os.path.join(OUTPUT, TARGET, fuzzer, 'ready')
+    if not os.path.exists(ready_path):
+        return False
+    return True
+
+
+def check_fuzzer_ready():
+    global ARGS, FUZZERS, TARGET, OUTPUT
+    for fuzzer in FUZZERS:
+        if ARGS.focus_one and fuzzer != ARGS.focus_one: continue
+        # NOTE: fuzzer driver will create a ready file when launcing
+        ready_path = os.path.join(OUTPUT, TARGET, fuzzer, 'ready')
+        if not os.path.exists(ready_path):
+            return False
+    return True
+
+
 def cleanup(exit_code=0):
     global ARGS
     logger.info('cleanup')
@@ -149,10 +175,6 @@ def start(fuzzer: Fuzzer,
           timeout,
           input_dir=None,
           empty_seed=False):
-    '''
-    call Fuzzer API to start fuzzer
-    '''
-
     global  FUZZERS, ARGS
     fuzzer_config = config['fuzzer'][fuzzer]
     create_output_dir = fuzzer_config.get('create_output_dir', True)
@@ -173,7 +195,6 @@ def start(fuzzer: Fuzzer,
                                 input_dir=input_dir,
                                 empty_seed=empty_seed)
     kw['command'] = 'start'
-
     fuzzer_driver.main(**kw)
 
     scale(fuzzer=fuzzer,
@@ -183,15 +204,39 @@ def start(fuzzer: Fuzzer,
 
 
 def stop(fuzzer, input_dir=None, empty_seed=False):
-    '''
-    call Fuzzer API to stop fuzzer
-    '''
     logger.debug(f'stop: {fuzzer}')
     kw = gen_fuzzer_driver_args(fuzzer=fuzzer,
                                 input_dir=input_dir,
                                 empty_seed=empty_seed)
     kw['command'] = 'stop'
     fuzzer_driver.main(**kw)
+
+
+
+def pause(fuzzer, input_dir=None, empty_seed=False):
+    logger.debug(f'pause: {fuzzer}')
+    kw = gen_fuzzer_driver_args(fuzzer=fuzzer,
+                                input_dir=input_dir,
+                                empty_seed=empty_seed)
+    kw['command'] = 'pause'
+    fuzzer_driver.main(**kw)
+
+
+def resume(fuzzer, input_dir=None, empty_seed=False):
+    logger.debug(f'resume: {fuzzer}')
+    kw = gen_fuzzer_driver_args(fuzzer=fuzzer,
+                                input_dir=input_dir,
+                                empty_seed=empty_seed)
+    kw['command'] = 'resume'
+    fuzzer_driver.main(**kw)
+
+
+
+def thread_update_fuzzer_log(fuzzers):
+    update_time = 60
+    while not is_end():
+        update_fuzzer_log(fuzzers)
+        time.sleep(update_time)
 
 
 
@@ -299,19 +344,35 @@ def main():
                 empty_seed=ARGS.empty_seed)
 
 
+        time.sleep(2)
+        start_time=time.time()
+
+        while not check_fuzzer_ready_one(fuzzer):
+            current_time = time.time()
+            elasp = current_time - start_time
+            if elasp > 180 :
+                logger.critical('fuzzer start up error')
+                terminate_dcfuzz()
+            logger.info(
+                    f'fuzzer not {fuzzer} ready, sleep 10 seconds to warm up')
+            time.sleep(2)
+
+
+        pause(fuzzer=fuzzer, input_dir=INPUT, empty_seed=ARGS.empty_seed)
 
 
 
+    LOG_DATETIME = f'{datetime.datetime.now():%Y-%m-%d-%H-%M-%S}'
+    LOG_FILE_NAME = f'{TARGET}_{LOG_DATETIME}.json'
 
 
+    thread_fuzzer_log = threading.Thread(target=thread_update_fuzzer_log,
+                                         kwargs={'fuzzers': FUZZERS},
+                                         daemon=True)
+    thread_fuzzer_log.start()
 
-
-
-
-
-
-
-
+    thread_health = threading.Thread(target=thread_health_check, daemon=True)
+    thread_health.start()
 
 
 

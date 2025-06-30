@@ -131,7 +131,7 @@ def gen_fuzzer_driver_args(fuzzer: Fuzzer,
     if input_dir:
         seed = input_dir
     elif empty_seed:
-        seed = '/seeds/custom/empty'
+        seed = '/benchmark/seed/empty'
     else:
         seed = target_config['seed']
     group = target_config['group']

@@ -14,10 +14,10 @@ apt-get install -y opam libclang-cpp12-dev libgmp-dev libclang-12-dev llvm-12-de
 sed -i '/^opam init/ s/$/ --disable-sandboxing/' build.sh
 ./build.sh
 
-echo "***********************************************************************************************"
-
-opam install cli claml ppx_compare yojson ocamlgraph memtrace lymp clangml conf-libclang.12 batteries apron conf-mpfr linenoise
-#opam install ppx_compare yojson ocamlgraph memtrace lymp clangml conf-libclang.12 batteries apron conf-mpfr cil linenoise claml
+#echo "***********************************************************************************************"
+#exit 0
+#opam install cli claml ppx_compare yojson ocamlgraph memtrace lymp clangml conf-libclang.12 batteries apron conf-mpfr linenoise
+opam install ppx_compare yojson ocamlgraph memtrace lymp clangml conf-libclang.12 batteries apron conf-mpfr cil linenoise claml
 
 eval $(opam env)
 make clean

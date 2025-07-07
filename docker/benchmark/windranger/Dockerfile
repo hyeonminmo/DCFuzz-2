@@ -10,18 +10,8 @@ COPY targetBuild/triage /benchmark/triage
 ENV ASAN_OPTIONS=allocator_may_return_null=1,detect_leaks=0
 WORKDIR /benchmark
 
-
-RUN echo "****************build ASAN********************"
-
-COPY targetBuild/build_bench_ASAN.sh /benchmark/build_bench_ASAN.sh
-RUN ./build_bench_ASAN.sh
-
 RUN echo "****************build windranger**************************"
 
 COPY windranger/build_bench_windranger.sh /benchmark/build_bench_windranger.sh
 RUN ./build_bench_windranger.sh
-
-
-COPY targetBuild/build_patched.sh /benchmark/build_patched.sh
-RUN ./build_patched.sh
 

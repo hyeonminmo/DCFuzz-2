@@ -1,8 +1,12 @@
 FROM fuzzer_base/aflgo as aflgo
 FROM fuzzer_base/windranger as windranger
+FROM fuzzer_base/dafl as dafl
 
 FROM dcfuzz_bench/aflgo as bench_aflgo
 FROM dcfuzz_bench/windranger as bench_windranger
+FROM dcfuzz_bench/dafl as bench_dafl
+FROM dcfuzz_bench/asan as bench_asan
+FROM dcfuzz_bench/patch as bench_patch
 
 FROM ubuntu:20.04
 
@@ -19,7 +23,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8
 
 
-# Install proper tools
+## Install proper tools
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -39,18 +43,23 @@ RUN apt-get update && \
 ### Copy fuzzer and builded program docker image 
 
 
-
-
-# Copy fuzzer image
+## Copy fuzzer image
 
 COPY --chown=$UID:$GID --from=aflgo /fuzzer /fuzzer
 COPY --chown=$UID:$GID --from=windranger /fuzzer /fuzzer
+COPY --chown=$UID:$GID --from=dafl /fuzzer /fuzzer
 
-
-# Copy program with each fuzzer image 
+## Copy program with each fuzzer image 
 
 #COPY --chown=$UID:$GID --from=bench_aflgo /benchmark/bin /benchmark/bin
+COPY --chown=$UID:$GID --from=bench_asan /benchmark/bin /benchmark/bin
+COPY --chown=$UID:$GID --from=bench_patch /benchmark/bin /benchmark/bin
 COPY --chown=$UID:$GID --from=bench_windranger /benchmark/bin /benchmark/bin
+COPY --chown=$UID:$GID --from=bench_dafl /benchmark /benchmark
+COPY --chown=$UID:$GID --from=bench_dafl /sparrow /sparrow
+COPY --chown=$UID:$GID --from=bench_dafl /smake /smake
+
+
 
 
 # Copy 
@@ -64,12 +73,12 @@ COPY --chown=$UID:$GID --from=bench_aflgo /benchmark /benchmark
 
 
 
+### 
 
 
 USER root
 
-
-# install newer python3 
+## install newer python3 
 RUN apt install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-dev ca-certificates
 
 

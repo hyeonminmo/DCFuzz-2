@@ -30,11 +30,22 @@ RUN apt-get update && \
     build-essential cmake git curl wget unzip \
     autoconf automake libtool bison flex \
     zlib1g-dev libssl-dev python3 python3-pip \
-    llvm clang clang-format clang-tidy \
+    clang-format clang-tidy \
     ninja-build pkg-config lcov python3-setuptools \
-    python3-dev libglib2.0-dev libxml2-dev \
+    python3-dev libglib2.0-dev libxml2-dev libclang-12-dev llvm-12-dev \
     libncurses5-dev libsqlite3-dev \
     tzdata sudo vim tmux htop zsh
+
+
+RUN apt-get update && \
+    apt-get install -yy \
+    git build-essential bc \
+    golang binutils-gold \
+    libncurses5 \
+    libfreetype6 libfreetype6-dev \
+    python-dev \
+    nasm \
+    libbz2-dev liblzo2-dev
 
 
 
@@ -68,8 +79,6 @@ COPY --chown=$UID:$GID --from=bench_aflgo /benchmark /benchmark
 #COPY --chown=$UID:$GID --from=bench_aflgo /benchmark/seed /benchmark/seed
 #COPY --chown=$UID:$GID --from=bench_aflgo /benchmark/target /benchmark/target
 #COPY --chown=$UID:$GID --from=bench_aflgo /benchmark/triage /benchmark/triage
-
-
 
 
 

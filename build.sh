@@ -1,6 +1,5 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(dirname $(realpath $0))
-IMAGE_PREFIX=dcfuzz
 BENCHMARK_PREFIX=dcfuzz_bench
 
 USER=dcfuzz

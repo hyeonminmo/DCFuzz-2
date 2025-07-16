@@ -37,8 +37,8 @@ CONFIG: Dict = {
     # justafl is used to get AFL bitmap
     # aflasan is used to triage crashes/bugs
     'evaluator': {
-        'binary_root': '/d/p/justafl',
-        'binary_crash_root': '/d/p/aflasan',
+        'binary_root': '',
+        'binary_crash_root': '',
     },
     # only specify basic things
     # how to launch fuzzers with proper arguments is handled by fuzzer driver
@@ -54,6 +54,12 @@ CONFIG: Dict = {
             'crash_dir': CRASH_DIR,
             'command': '/fuzzer/WindRanger/fuzz/afl-fuzz',
             'target_root': '/benchmark/bin/WindRanger'
+        }
+        'dafl': {
+            'input_dir': INPUT_DIR,
+            'crash_dir': CRASH_DIR,
+            'command': '/fuzzer/DAFL/afl-fuzz',
+            'target_root': '/benchmark/bin/DAFL'
         }
         #'fairfuzz': {
         #    'input_dir': INPUT_DIR,

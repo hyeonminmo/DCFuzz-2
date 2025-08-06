@@ -1,6 +1,6 @@
 #!/bin/bash -e
 SCRIPT_DIR=$(dirname $(realpath $0))
-IMAGE_PREFIX=dcfuzz_bench
+IMAGE_PREFIX=dcfuzz_bench2
 FUZZER_PREFIX=fuzzer_base
 
 fuzzer_list=(

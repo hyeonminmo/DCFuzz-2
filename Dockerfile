@@ -2,11 +2,11 @@ FROM fuzzer_base/aflgo as aflgo
 FROM fuzzer_base/windranger as windranger
 FROM fuzzer_base/dafl as dafl
 
-FROM dcfuzz_bench/aflgo as bench_aflgo
-FROM dcfuzz_bench/windranger as bench_windranger
-FROM dcfuzz_bench/dafl as bench_dafl
-FROM dcfuzz_bench/asan as bench_asan
-FROM dcfuzz_bench/patch as bench_patch
+FROM dcfuzz_bench2/aflgo as bench_aflgo
+FROM dcfuzz_bench2/windranger as bench_windranger
+FROM dcfuzz_bench2/dafl as bench_dafl
+FROM dcfuzz_bench2/asan as bench_asan
+FROM dcfuzz_bench2/patch as bench_patch
 
 FROM ubuntu:20.04
 

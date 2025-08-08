@@ -102,7 +102,7 @@ CONFIG: Dict = {
             }
         },
         'cxxfilt-2016-4492': {
-            'group': 'ccxxfilt',
+            'group': 'cxxfilt',
             'seed': '/benchmark/seed/cxxfilt',
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',

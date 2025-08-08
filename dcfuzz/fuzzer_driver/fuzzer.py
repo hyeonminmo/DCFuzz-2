@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 
 import psutil
 
-from rcfuzz.common import IS_DEBUG
+from dcfuzz.common import IS_DEBUG
 
 
 class FuzzerDriverException(Exception):

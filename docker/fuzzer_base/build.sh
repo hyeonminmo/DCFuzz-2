@@ -5,8 +5,8 @@ export IMAGE_PREFIX=fuzzer_base2
 fuzzer_list=(
     base
     aflgo
-    windranger
-    dafl
+    #windranger
+    #dafl
 )
 
 USER=$(id -un)

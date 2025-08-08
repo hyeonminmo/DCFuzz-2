@@ -793,7 +793,6 @@ class Schedule_Base(SchedulingAlgorithm):
                     self.rcFuzzers[fuzzer].threshold *= 0.5
                 focusRemainTime -= focusRunTime
 
-                logger.info(f'main 501 - focus round : {focusRound}end result - fuzzer : {fuzzer}, previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.rcFuzzers[fuzzer].S}, fuzzer fail : {self.rcFuzzers[fuzzer].F}, fuzzer threshold : {self.rcFuzzers[fuzzer].threshold}, fuzzer branch difficulty : {self.rcFuzzers[fuzzer].diff}, focusRemainTime : {focusRemainTime}, focusRunTime : {focusRunTime}')
                 previousBitmap = currentBitmap
                 previousBug = currentBug
                 focusRound += 1
@@ -1131,9 +1130,9 @@ class Schedule_DCFuzz(Schedule_Base):
         while True:
             if is_end():return
             if not self.pre_round():continue
-            logger.info(f'main 803 - execution phase round {self.round_num} start')
-            self.execution()
-            logger.info(f'main 804 - execution phase round {self.round_num} end')
+            #logger.info(f'main 803 - execution phase round {self.round_num} start')
+            #self.execution()
+            #logger.info(f'main 804 - execution phase round {self.round_num} end')
             self.post_round()
 
 

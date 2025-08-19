@@ -78,7 +78,7 @@ CONFIG: Dict = {
             #'dict': 'jpeg.dict',
             # default is AFL-style (@@ for input file)
             'args': {
-                'default': '@@',
+                'default': '',
             }
             # fuzzers that do not support this target.
             # rcfuzz will do some sanity check when started.
@@ -89,7 +89,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '',
             }
         },
         'cxxfilt-2016-4491': {
@@ -98,7 +98,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '',
             }
         },
         'cxxfilt-2016-4492': {
@@ -107,7 +107,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '',
             }
         },
         'cxxfilt-2016-4492-crash1': {
@@ -116,7 +116,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '',
             }
         },
         'cxxfilt-2016-4492-crash2': {
@@ -125,16 +125,16 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '',
             }
         },
-        'cxxfilt-2016-5131': {
+        'cxxfilt-2016-6131': {
             'group': 'cxxfilt',
             'seed': '/benchmark/seed/cxxfilt',
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '',
             }
         },
         'swftophp-2016-9827': {

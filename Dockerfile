@@ -1,12 +1,12 @@
-FROM fuzzer_base/aflgo as aflgo
+FROM fuzzer_base2/aflgo as aflgo
 FROM fuzzer_base/windranger as windranger
 FROM fuzzer_base/dafl as dafl
 
 FROM dcfuzz_bench2/aflgo as bench_aflgo
-FROM dcfuzz_bench2/windranger as bench_windranger
-FROM dcfuzz_bench2/dafl as bench_dafl
-FROM dcfuzz_bench2/asan as bench_asan
-FROM dcfuzz_bench2/patch as bench_patch
+FROM dcfuzz_bench/windranger as bench_windranger
+FROM dcfuzz_bench/dafl as bench_dafl
+FROM dcfuzz_bench/asan as bench_asan
+FROM dcfuzz_bench/patch as bench_patch
 
 FROM ubuntu:20.04
 
@@ -90,6 +90,14 @@ USER root
 ## install newer python3 
 RUN apt install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev tk-dev ca-certificates
 
+RUN wget https://www.python.org/ftp/python/3.9.4/Python-3.9.4.tgz \
+    && tar xf Python-3.9.4.tgz \
+    && cd Python-3.9.4 \
+    && ./configure \
+    && make -j8 install
+
+RUN curl https://bootstrap.pypa.io/get-pip.py -o /get-pip.py && python3 /get-pip.py
+
 
 # set timezone
 ENV TZ=America/New_York
@@ -101,8 +109,21 @@ RUN locale-gen en_US.UTF-8
 
 
 COPY init.sh /
+COPY dcfuzz/ /dcfuzz/dcfuzz
+COPY setup.py /dcfuzz/
+COPY requirements.txt /dcfuzz/
 
-WORKDIR /root
+RUN pip install /dcfuzz
+
+RUN groupadd -g $GID -o $USER
+
+RUN adduser --disabled-password --gecos '' -u $UID -gid $GID ${USER}
+RUN adduser ${USER} sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER $USER
+
+WORKDIR /home/$USER
 
 
 

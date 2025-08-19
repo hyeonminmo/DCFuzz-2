@@ -1253,7 +1253,7 @@ def main():
     # init fuzzer - success count and fail count
     for fuzzer in FUZZERS:
         dcFuzzers[fuzzer] = thompson.fuzzer()
-        logger.info(f'main 035 - fuzzer : {fuzzer}, success : {dcFuzzers[fuzzer].S}, failure : {dcFuzzers[fuzzer].F')
+        logger.info(f'main 035 - fuzzer : {fuzzer}, success : {dcFuzzers[fuzzer].S}, failure : {dcFuzzers[fuzzer].F}')
         #dcFuzzers[fuzzer].diff = ARGS.diff
         #dcFuzzers[fuzzer].threshold = ARGS.threshold
 

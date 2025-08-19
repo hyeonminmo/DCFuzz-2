@@ -1,5 +1,5 @@
 ARG FUZZER_PREFIX
-FROM $FUZZER_PREFIX/distance
+FROM $FUZZER_PREFIX/aflgo
 
 COPY targetBuild/benchmark-project /benchmark/project
 COPY targetBuild/target/line /benchmark/target/line

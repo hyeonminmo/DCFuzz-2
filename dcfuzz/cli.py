@@ -82,7 +82,7 @@ class ArgsParser(Tap):
 
         self.add_argument("--timeout",
                 "-T",
-                default='24h'
+                default='24h',
                 help="program termination time")
 
         self.add_argument("--empty_seed",

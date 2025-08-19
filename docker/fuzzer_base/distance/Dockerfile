@@ -1,10 +1,12 @@
 ARG PREFIX
 FROM $PREFIX/base
 
-WORKDIR /fuzzer
+RUN mkdir -p /fuzzer/distance
+
+WORKDIR /fuzzer/distance
 
 RUN git clone https://github.com/aflgo/aflgo.git AFLGo && \
-    cd /fuzzer/AFLGo && \
+    cd /fuzzer/distance/AFLGo && \
     git checkout b170fad54396f376160befd87adbba28b27c15d9 && \
     sed -i '/q->distance = cur_distance;/a \  printf("seed_file:%s cur_distance:%.2f\\n", q->fname, cur_distance);' \
       ./afl-fuzz.c && \
@@ -16,3 +18,6 @@ RUN git clone https://github.com/aflgo/aflgo.git AFLGo && \
 
 ENV CC=afl-clang-fast \
     CXX=afl-clang-fast++
+
+
+

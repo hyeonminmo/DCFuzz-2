@@ -4,13 +4,13 @@ IMAGE_PREFIX=dcfuzz_bench2
 FUZZER_PREFIX=fuzzer_base2
 
 fuzzer_list=(
-    asan
-    aflgo
+    #asan
+    #aflgo
     #windranger
     #dafl
     #patch
-    #coverage
-    # aflfast
+    coverage
+    #score    
     # mopt
     # qsym
     #angora

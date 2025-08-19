@@ -54,7 +54,7 @@ CONFIG: Dict = {
             'crash_dir': CRASH_DIR,
             'command': '/fuzzer/WindRanger/fuzz/afl-fuzz',
             'target_root': '/benchmark/bin/WindRanger'
-        }
+        },
         'dafl': {
             'input_dir': INPUT_DIR,
             'crash_dir': CRASH_DIR,
@@ -69,7 +69,7 @@ CONFIG: Dict = {
         #    'target_root': '/d/p/justafl',
         #    'afl_based': True
         #}
-    }
+    },
     # each target has a group like e
     'target': {
         'cxxfilt-2016-4489': {
@@ -190,7 +190,7 @@ CONFIG: Dict = {
             'args': {
                 'default': '@@ /dev/null',
             }
-        },
+        }
 
 
     }

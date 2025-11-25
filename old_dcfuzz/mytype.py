@@ -11,17 +11,9 @@ BitmapContribution = Dict[Fuzzer, Bitmap]
 
 
 class FuzzerType(enum.Enum):
-    AFL = 'afl'
-    AFLFAST = 'aflfast'
-    MOPT = 'mopt'
-    FAIRFUZZ = 'fairfuzz'
-    LEARNAFL = 'learnafl'
-    RADAMSA = 'radamsa'
-    REDQUEEN = 'redqueen'
-    LAFINTEL = 'lafintel'
-    QSYM = 'qsym'
-    ANGORA = 'angora'
-    LIBFUZZER = 'libfuzzer'
+    AFLGo = 'aflgo'
+    WindRanger = 'windranger'
+    DAFL = 'dafl'
 
 
 class SeedType(enum.Enum):

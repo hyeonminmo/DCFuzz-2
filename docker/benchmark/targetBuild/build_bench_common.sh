@@ -38,19 +38,12 @@ function copy_build_result() {
     echo "fuzzer : $4"
     echo "path : $(pwd)"
 
-    if [ -d RUNDIR-$1 ]; then
-	    echo "exist directory"
+    if [ -d RUNDIR-$1/$2 ]; then
+	    echo "exist directory" 
     else
 	    echo "not exist directory"
     fi
-
-    if [ "$4" = "AFLGo" ]; then
-	echo "AFLGO."
-	#echo "$(ls RUNDIR-$1)"
-	#sleep 1800
-    fi
-
-
+       
     cp RUNDIR-$1/$2 /benchmark/bin/$4/$TARG || exit 1
     # If we have 'poc' or 'poc-<binname>' directory, copy it.
     if [[ -d project/$1/poc && ! -d /benchmark/poc/$2 ]]; then
@@ -65,5 +58,8 @@ function copy_build_result() {
     fi
     if [[ -d project/$1/seed-$2 && ! -d /benchmark/seed/$TARG ]]; then
         cp -r project/$1/seed-$2 /benchmark/seed/$TARG || exit 1
+    fi
+    if [[ -d project/$1/seed-$2-$3 && ! -d /benchmark/seed/$TARG ]]; then
+        cp -r project/$1/seed-$2-$3 /benchmark/seed/$TARG || exit 1
     fi
 }

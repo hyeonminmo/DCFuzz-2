@@ -26,7 +26,7 @@ CONFIG: Dict = {
         'focus_time': 300,
         'coverage_update_time': 30,
         'sync_time': 300,
-        'timeout': '24h'
+        'timeout': '86400'
     },
     # unused now
     'docker': {
@@ -143,7 +143,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '@@',
             }
         },
         'swftophp-2016-9829': {
@@ -152,7 +152,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '@@',
             }
         },
         'swftophp-2016-9831': {
@@ -161,7 +161,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '@@',
             }
         },
         'swftophp-2017-9988': {
@@ -170,7 +170,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '@@',
             }
         },
         'swftophp-2017-11728': {
@@ -179,7 +179,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '@@',
             }
         },
         'swftophp-2017-11729': {
@@ -188,7 +188,7 @@ CONFIG: Dict = {
             #'code_dir': 'unibench/gdk-pixbuf-2.31.1',
             #'dict': 'jpeg.dict',
             'args': {
-                'default': '@@ /dev/null',
+                'default': '@@',
             }
         }
 

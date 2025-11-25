@@ -2,14 +2,20 @@
 import argparse
 import os
 import sys
+import logging
 
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-from .afl import (AFLController, AFLFASTController, FAIRFUZZController,
-                  LAFINTELController, LEARNAFLController, MOPTController,
-                  RADAMSAController, REDQUEENController)
-from .angora import ANGORAController
-from .libfuzzer import LIBFUZZERController
-from .qsym import QSYMController
+from .aflgo import AFLGoController
+from .dafl import DAFLController
+#from .qsym import QSYMController
+
+logger = logging.getLogger('rcfuzz.fuzzer_driver.main')
+
+CONTROLLER_MAP = {
+    "aflgo": "AFLGoController",
+    "dafl": "DAFLController",
+    "windranger": "WindRangerController",
+}
 
 
 def str_to_class(classname):
@@ -58,7 +64,12 @@ def main(fuzzer,
          command,
          cgroup_path='',
          scale_num=1):
-    controller_class = str_to_class(f'{str.upper(fuzzer)}Controller')
+
+    controller_class_name = CONTROLLER_MAP.get(fuzzer, None)
+
+    logger.info(f'fuzzer_driver 001 - controller_class_name : {controller_class_name}')
+
+    controller_class = str_to_class(controller_class_name)
     if controller_class is None:
         print(f"{fuzzer} controller doesn't exist.")
 
@@ -69,7 +80,14 @@ def main(fuzzer,
                                   argument=argument,
                                   thread=thread,
                                   cgroup_path=cgroup_path)
+
+    logger.info(f'fuzzer_driver 002 - controller : {controller}')
+
     controller.init()
+
+
+
+
     command = command
 
     if command == 'start':

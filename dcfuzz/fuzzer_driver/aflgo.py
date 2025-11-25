@@ -6,9 +6,12 @@ import time
 import peewee
 import psutil
 
-from dcfuzz import config as Config
-from .db import ControllerModel, db_proxy
 
+from dcfuzz import config as Config
+
+from .controller import Controller
+from .db import ControllerModel, db_proxy
+from .fuzzer import FuzzerDriverException, PSFuzzer
 
 
 CONFIG = Config.CONFIG
@@ -79,14 +82,17 @@ class AFLGoBase(PSFuzzer):
         return os.path.dirname(self.target)
 
     def gen_env(self):
-        return {
+        env = {
                 'AFL_NO_UI': '1',
                 'AFL_SKIP_CPUFREQ': '1',
                 'AFL_NO_AFFINITY': '1',
                 'AFL_SKIP_CRASHES': '1',
-                'AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES':'1',
+                'AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES': '1',
                 'UBSAN_OPTIONS': 'print_stacktrace=1:halt_on_error=1'
                 }
+        env.pop('ASAN_OPTIONS', None)
+        return env
+
     def check(self):
         ret = True
         ret &= os.path.exists(self.target)
@@ -99,10 +105,12 @@ class AFLGoBase(PSFuzzer):
         args = []
         if self.cgroup_path:
             args += ['cgexec', '-g', f'cpu:{self.cgroup_path}']
+
         args += [self.aflgo_command, '-i', self.seed, '-o', self.output]
         args += ['-m', 'none']
+        args += ['-d']
         args += ['-z', 'exp']
-        args += ['-c', '45m']
+        args += ['-c', '20h']
         args += ['--', self.target]
         args += self.argument.split(' ')
         return args
@@ -122,18 +130,19 @@ class AFLGo(AFLGoBase):
             args += ['cgexec', '-g', f'cpu:{self.cgroup_path}']
         args += [self.aflgo_command, '-i', self.seed, '-o', self.output]
         args += ['-m', 'none']
+        args += ['-d']
         args += ['-z', 'exp']
-        args += ['-c', '45m']
+        args += ['-c', '20h']
         args += ['--', self.target]
         args += self.argument.split(' ')
         return args
 
 class AFLGoController(Controller):
     def __init__(self, seed, output, group, program, argument, thread=1, cgroup_path=''):
-         self.db = peewee.SqliteDatabase(
-            os.path.join(Config.DATABASE_DIR, 'dcfuzz-aflgo.db'))
+        self.db = peewee.SqliteDatabase(
+                os.path.join(Config.DATABASE_DIR, 'dcfuzz-aflgo.db'))
         self.name = 'aflgo'
-        self.seed = seed
+        self.seed = seed        
         self.output = output
         self.group = group
         self.program = program
@@ -142,13 +151,13 @@ class AFLGoController(Controller):
         self.cgroup_path = cgroup_path
         self.aflgos = []
         self.kwargs = {
-            'seed': self.seed,
-            'output': self.output,
-            'group': self.group,
-            'program': self.program,
-            'argument': self.argument,
-            'thread': self.thread,
-            'cgroup_path' : self.cgroup_path
+                'seed': self.seed,
+                'output': self.output,
+                'group': self.group,
+                'program': self.program,
+                'argument': self.argument,
+                'thread': self.thread,
+                'cgroup_path' : self.cgroup_path
         }
 
     def init(self):

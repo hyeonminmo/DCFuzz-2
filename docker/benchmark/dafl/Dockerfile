@@ -16,16 +16,17 @@ COPY dafl/build_smake.sh /benchmark/build_smake.sh
 RUN ./build_smake.sh
 
 
-RUN echo "****************setup sparrow********************"
 
-COPY dafl/setup_sparrow.sh /benchmark/setup_sparrow.sh
-RUN ./setup_sparrow.sh
+# RUN echo "****************setup sparrow********************"
 
-#RUN echo "****************build dafl**************************"
+# COPY dafl/setup_sparrow.sh /benchmark/setup_sparrow.sh
+# RUN ./setup_sparrow.sh
 
-COPY dafl/script /benchmark/scripts
-COPY dafl/build_bench_dafl.sh /benchmark/build_bench_dafl.sh
-RUN ./build_bench_dafl.sh
+# RUN echo "****************build dafl**************************"
+
+# COPY dafl/script /benchmark/scripts
+# COPY dafl/build_bench_dafl.sh /benchmark/build_bench_dafl.sh
+# RUN ./build_bench_dafl.sh
 
 
 
